@@ -7,9 +7,9 @@ MAINTAINER Sarcouy <sarcouy@protonmail.com>
 
 EXPOSE 8080
 
-ENV TOMCAT_VERSION=8.5.14 \
+ENV TOMCAT_VERSION=8.5.35 \
     TOMCAT_MAJOR=8 \
-    MAVEN_VERSION=3.5.0 \
+    MAVEN_VERSION=3.5.4 \
     TOMCAT_DISPLAY_VERSION=8.5 \
     CATALINA_HOME=/tomcat \
     JAVA="java-1.8.0-openjdk java-1.8.0-openjdk-devel" \
