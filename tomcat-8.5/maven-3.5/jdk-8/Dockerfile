@@ -35,6 +35,9 @@ RUN INSTALL_PKGS="tar unzip bc which lsof $JAVA" && \
     (curl -v https://www.apache.org/dist/tomcat/tomcat-$TOMCAT_MAJOR/v$TOMCAT_VERSION/bin/apache-tomcat-$TOMCAT_VERSION.tar.gz | tar -zx --strip-components=1 -C /tomcat) && \
     mkdir -p /opt/s2i/destination
 
+# Add mysql connector for tomcat to be able to manage connections
+ADD http://central.maven.org/maven2/mysql/mysql-connector-java/8.0.13/mysql-connector-java-8.0.13.jar /tomcat/lib/
+
 # Add s2i tomcat customizations
 ADD ./contrib/settings.xml $HOME/.m2/
 
