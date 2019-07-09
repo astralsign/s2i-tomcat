@@ -7,7 +7,7 @@ MAINTAINER Sarcouy <sarcouy@protonmail.com>
 
 EXPOSE 8080
 
-ENV TOMCAT_VERSION=8.5.35 \
+ENV TOMCAT_VERSION=8.5.42 \
     TOMCAT_MAJOR=8 \
     MAVEN_VERSION=3.5.4 \
     TOMCAT_DISPLAY_VERSION=8.5 \
@@ -22,16 +22,20 @@ LABEL io.k8s.description="Platform for building and running Java applications on
       io.openshift.tags="builder,tomcat,tomcat8.5" \
       io.openshift.s2i.destination="/opt/s2i/destination"
 
-# Install Maven, Tomcat, Java
+# Install Java
 RUN INSTALL_PKGS="tar unzip bc which lsof $JAVA" && \
     yum install -y --enablerepo=centosplus $INSTALL_PKGS && \
     rpm -V $INSTALL_PKGS && \
-    yum clean all -y && \
-    (curl -v https://www.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz | \
+    yum clean all -y
+
+# Install Maven
+RUN (curl -v https://www.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz | \
     tar -zx -C /usr/local) && \
     ln -sf /usr/local/apache-maven-$MAVEN_VERSION/bin/mvn /usr/local/bin/mvn && \
-    mkdir -p $HOME/.m2 && \
-    mkdir -p /tomcat && \
+    mkdir -p $HOME/.m2
+
+# Install Tomcat
+RUN mkdir -p /tomcat && \
     (curl -v https://www.apache.org/dist/tomcat/tomcat-$TOMCAT_MAJOR/v$TOMCAT_VERSION/bin/apache-tomcat-$TOMCAT_VERSION.tar.gz | tar -zx --strip-components=1 -C /tomcat) && \
     mkdir -p /opt/s2i/destination
 
